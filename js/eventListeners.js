@@ -6,11 +6,10 @@ canvas.addEventListener('mousedown', function(event){
 }, true);
 
 canvas.addEventListener('mouseup', function(event){
-    var x_up = event.offsetX,
-        y_up = event.offsetY;
+    x_up = event.offsetX,
+    y_up = event.offsetY;
     mouseDown = false;
-    clicked_circle = null;
-    console.log(mouseDown)
+    console.log(clicked_circle)
 }, true);
 
 canvas.addEventListener('mousemove', function(event){

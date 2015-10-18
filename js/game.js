@@ -31,6 +31,7 @@ function Player(x, y){
         if(mouseDownListener(this.x, this.y, this.radius) && mouseDown){
             this.click = true;
             hover = true;
+            if(clicked_circle !== this) clicked_circle = this;
         } else {
             this.click = false;
             hover = false;
@@ -40,7 +41,7 @@ function Player(x, y){
         ctx.beginPath();
         ctx.arc(this.x,this.y,this.radius,0,2*Math.PI);
         this.checkHover();
-        if(this.hover){
+        if(this.hover || this.click){
             ctx.fillStyle = 'green';
             ctx.fill();
         }
@@ -57,6 +58,9 @@ function Player(x, y){
             ctx.lineTo(x_move,y_move);
             ctx.stroke();
         }
+    };
+    this.move = function(){
+
     }
 }
 
