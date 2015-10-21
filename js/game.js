@@ -18,6 +18,21 @@ function Player(x, y){
     this.lineWidth = 2;
     this.hover = false;
     this.click = false;
+    this.power = null;
+    this.angle = null;
+    this.move = function(){
+      if(this.power !== null && this.power > 0){
+          this.x = this.x + this.power;
+          this.y = this.y + this.power;
+          this.power = this.power - 0.3;
+          console.log(this.x, this.y);
+      }
+    };
+    this.startMove = function(power, angle){
+      this.power = power;
+      this.angle = angle;
+
+    };
     this.checkHover = function(){
         if(hoverListener(this.x, this.y, this.radius)){
             this.hover = true;
@@ -58,10 +73,8 @@ function Player(x, y){
             ctx.lineTo(x_move,y_move);
             ctx.stroke();
         }
+        this.move();
     };
-    this.move = function(){
-
-    }
 }
 
 function drawElements(){

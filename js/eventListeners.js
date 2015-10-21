@@ -30,8 +30,9 @@ canvas.addEventListener('mouseup', function(event){
             angle = 270 + angle;
             console.log('fourth')
         }
-            console.log('________power: '+power);
-            console.log('________angle: '+angle);
+        console.log('________power: '+power);
+        console.log('________angle: '+angle);
+        clicked_circle.startMove(power, angle);
     }
 }, true);
 
