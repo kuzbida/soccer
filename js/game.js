@@ -12,26 +12,41 @@ function mouseDownListener(x, y, r){
 }
 
 function Player(x, y){
-    this.x = x || width/2;
-    this.y = y || height/2;
+    this.x = x !== undefined ? x : width/2;
+    this.y = y !== undefined ? y : height/2;
     this.radius = 20;
     this.lineWidth = 2;
     this.hover = false;
     this.click = false;
     this.power = null;
     this.angle = null;
+    this.radian = null;
+    this.quater = null;
+    this.tan = function(){
+      return Math.tan(this.radian);
+    };
     this.move = function(){
       if(this.power !== null && this.power > 0){
-          this.x = this.x + this.power;
-          this.y = this.y + this.power;
+          var x_koef = 1/ this.tan() * (this.quater === 1 || this.quater === 4 ? 1 : -1);
+          var y_koef = this.tan() * (this.quater === 1 || this.quater === 2 ? 1 : -1);
+          if(x_koef > 10 || y_koef > 10){
+              x_koef = x_koef/10;
+              y_koef = y_koef/10;
+          }
+          if(this.angle === 0) {x_koef = 1; y_koef = 0;}
+          if(this.angle === 180) {x_koef = -1; y_koef = 0;}
+          if(this.angle === 90) {x_koef = 0; y_koef = 1}
+          if(this.angle === 270) {x_koef = 0; y_koef = -1}
+          this.x = this.x + this.power*x_koef;
+          this.y = this.y + this.power*y_koef;
           this.power = this.power - 0.3;
-          console.log(this.x, this.y);
       }
     };
-    this.startMove = function(power, angle){
+    this.startMove = function(power, radian, angle, quater){
       this.power = power;
+      this.radian = radian;
       this.angle = angle;
-
+      this.quater = quater;
     };
     this.checkHover = function(){
         if(hoverListener(this.x, this.y, this.radius)){
@@ -97,7 +112,7 @@ function cursorStyle(){
 
 function initGame(){
     circles.push(new Player);
-    circles.push(new Player(400, 200));
+    circles.push(new Player(0, 0));
     circles.push(new Player(400, 400));
     var gave = setInterval(function(){
         clearArea();
