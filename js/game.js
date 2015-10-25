@@ -22,23 +22,33 @@ function Player(x, y){
     this.angle = null;
     this.radian = null;
     this.quater = null;
+    this.x_koef = null;
+    this.y_koef = null;
     this.tan = function(){
       return Math.tan(this.radian);
     };
+    this.calculate = function(){
+        var x_koef = 1/ this.tan() * (this.quater === 1 || this.quater === 4 ? 1 : -1);
+        var y_koef = this.tan() * (this.quater === 1 || this.quater === 2 ? 1 : -1);
+        if(Math.abs(x_koef) > 10 || Math.abs(y_koef) > 10){
+            x_koef = x_koef/10;
+            y_koef = y_koef/10;
+        }
+        if(this.angle === 0) {x_koef = 1; y_koef = 0;}
+        if(this.angle === 180) {x_koef = -1; y_koef = 0;}
+        if(this.angle === 90) {x_koef = 0; y_koef = 1}
+        if(this.angle === 270) {x_koef = 0; y_koef = -1}
+        this.x_koef = x_koef;
+        this.y_koef = y_koef;
+    };
     this.move = function(){
       if(this.power !== null && this.power > 0){
-          var x_koef = 1/ this.tan() * (this.quater === 1 || this.quater === 4 ? 1 : -1);
-          var y_koef = this.tan() * (this.quater === 1 || this.quater === 2 ? 1 : -1);
-          if(Math.abs(x_koef) > 10 || Math.abs(y_koef) > 10){
-              x_koef = x_koef/10;
-              y_koef = y_koef/10;
-          }
-          if(this.angle === 0) {x_koef = 1; y_koef = 0;}
-          if(this.angle === 180) {x_koef = -1; y_koef = 0;}
-          if(this.angle === 90) {x_koef = 0; y_koef = 1}
-          if(this.angle === 270) {x_koef = 0; y_koef = -1}
-          this.x = this.x + this.power*x_koef;
-          this.y = this.y + this.power*y_koef;
+          if((this.x-this.radius) <= 0 || (this.x+this.radius) >= width )
+              this.x_koef = this.x_koef*(-1);
+          if((this.y-this.radius) <= 0 || (this.y+this.radius) >= height )
+              this.y_koef = this.y_koef*(-1);
+          this.x = this.x + this.power*this.x_koef;
+          this.y = this.y + this.power*this.y_koef;
           this.power = this.power - 0.3;
       }
     };
@@ -47,6 +57,7 @@ function Player(x, y){
       this.radian = radian;
       this.angle = angle;
       this.quater = quater;
+      this.calculate();
     };
     this.checkHover = function(){
         if(hoverListener(this.x, this.y, this.radius)){
