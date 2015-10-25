@@ -29,7 +29,7 @@ function Player(x, y){
       if(this.power !== null && this.power > 0){
           var x_koef = 1/ this.tan() * (this.quater === 1 || this.quater === 4 ? 1 : -1);
           var y_koef = this.tan() * (this.quater === 1 || this.quater === 2 ? 1 : -1);
-          if(x_koef > 10 || y_koef > 10){
+          if(Math.abs(x_koef) > 10 || Math.abs(y_koef) > 10){
               x_koef = x_koef/10;
               y_koef = y_koef/10;
           }
@@ -112,7 +112,7 @@ function cursorStyle(){
 
 function initGame(){
     circles.push(new Player);
-    circles.push(new Player(0, 0));
+    circles.push(new Player(200, 400));
     circles.push(new Player(400, 400));
     var gave = setInterval(function(){
         clearArea();

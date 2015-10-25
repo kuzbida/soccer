@@ -23,15 +23,15 @@ canvas.addEventListener('mouseup', function(event){
             quater = 1;
             console.log('first')
         } else if(x_difference <= 0 && y_difference >= 0){
-            //angle = 90 + angle;
+            angle = 90 + angle;
             quater = 2;
             console.log('second')
         } else if(x_difference <= 0 && y_difference <= 0){
-            //angle = 180 + angle;
+            angle = 180 + angle;
             quater = 3;
             console.log('third')
         } else if(x_difference >= 0 && y_difference <= 0){
-            //angle = 270 + angle;
+            angle = 270 + angle;
             quater = 4;
             console.log('fourth')
         }
