@@ -1,5 +1,5 @@
 canvas.addEventListener('mousedown', function(event){
-    x_down = event.offsetX,
+    x_down = event.offsetX;
     y_down = event.offsetY;
     mouseDown = true;
     console.log(mouseDown)
