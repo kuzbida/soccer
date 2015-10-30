@@ -2,7 +2,6 @@ canvas.addEventListener('mousedown', function(event){
     x_down = event.offsetX;
     y_down = event.offsetY;
     mouseDown = true;
-    console.log(mouseDown)
 }, true);
 
 canvas.addEventListener('mouseup', function(event){
@@ -13,7 +12,7 @@ canvas.addEventListener('mouseup', function(event){
         var x_difference = clicked_circle.x - x_up,
             y_difference = clicked_circle.y - y_up,
             vector_length = Math.sqrt(Math.pow(x_difference, 2) + Math.pow(y_difference, 2)),
-            power = vector_length/10,
+            power = vector_length/10 > 12 ? 12 : vector_length/10,
             opposite =  Math.sqrt(Math.pow(clicked_circle.y - y_up, 2)),
             radian = Math.asin(opposite / vector_length),
             angle = radian * 180/Math.PI,
@@ -37,7 +36,6 @@ canvas.addEventListener('mouseup', function(event){
         }
         console.log('________power: '+power);
         console.log('________angle: '+angle);
-        //clicked_circle.startMove(power, angle, quater);
         clicked_circle.startMove(power, radian, angle, quater);
     }
 }, true);

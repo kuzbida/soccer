@@ -11,4 +11,5 @@ var canvas = document.getElementById("ctx"),
     y_up = null,
     hover = false,
     mouseDown = false,
-    clicked_circle = false;
+    clicked_circle = false,
+    vector_length;

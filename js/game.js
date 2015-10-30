@@ -24,6 +24,8 @@ function Player(x, y){
     this.quater = null;
     this.x_koef = null;
     this.y_koef = null;
+    this.line_x = null;
+    this.line_y = null;
     this.tan = function(){
       return Math.tan(this.radian);
     };
@@ -49,7 +51,19 @@ function Player(x, y){
               this.y_koef = this.y_koef*(-1);
           this.x = this.x + this.power*this.x_koef;
           this.y = this.y + this.power*this.y_koef;
-          this.power = this.power - 0.3;
+          this.power = this.power - 0.15;
+          for(var k = 0; k < circles.length; k++){
+              if(circles[k] != clicked_circle){
+                  var _circle = circles[k],
+                      _r = _circle.radius;
+
+                  if(Math.abs(_circle.x - this.x) <= 2*_r + 2
+                      && Math.abs(_circle.y - this.y) <= 2*_r + 2){
+                      this.x_koef = this.x_koef*-1;
+                      this.y_koef = this.y_koef*-1;
+                  }
+              }
+          }
       }
     };
     this.startMove = function(power, radian, angle, quater){
@@ -96,7 +110,12 @@ function Player(x, y){
         if(this.click){
             ctx.beginPath();
             ctx.moveTo(this.x, this.y);
-            ctx.lineTo(x_move,y_move);
+            if(Math.sqrt(Math.pow((this.x - x_move), 2)
+                + Math.pow((this.y - y_move), 2)) < 120){
+                this.line_x = x_move;
+                this.line_y = y_move;
+            }
+            ctx.lineTo(this.line_x ,this.line_y);
             ctx.stroke();
         }
         this.move();
