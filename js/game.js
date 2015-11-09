@@ -11,14 +11,16 @@ function mouseDownListener(x, y, r){
         y + r > y_down;
 }
 
-function Player(x, y){
+function Circle(x, y, radius, powerDecrease, ball){
     this.x = x !== undefined ? x : width/2;
     this.y = y !== undefined ? y : height/2;
-    this.radius = 20;
+    this.radius = radius || 20;
+    this.ball = ball || false;
     this.lineWidth = 2;
     this.hover = false;
     this.click = false;
     this.power = 0;
+    this.powerDecrease = powerDecrease || 0.15;
     this.angle = null;
     this.radian = null;
     this.quater = null;
@@ -49,7 +51,7 @@ function Player(x, y){
               this.y_koef = this.y_koef*(-1);
           this.x = this.x + this.power*this.x_koef;
           this.y = this.y + this.power*this.y_koef;
-          this.power = this.power - 0.15;
+          this.power = this.power - this.powerDecrease;
           for(var k = 0; k < circles.length; k++){
               if(circles[k] != clicked_circle){
                   var _circle = circles[k],
@@ -58,9 +60,29 @@ function Player(x, y){
                   if(Math.abs(_circle.x - this.x) <= 2*_r
                       && Math.abs(_circle.y - this.y) <= 2*_r
                       && _circle.power === 0){
-                      var oldCalc = calcAngle(this.x, this.y,_circle.x, _circle.y);
-                      this.startMove(this.power*0.7,oldCalc.r,oldCalc.a,oldCalc.q);
-                      var newCalc = calcAngle(_circle.x, _circle.y, this.x, this.y);
+                      var newCalc = calcAngle(_circle.x, _circle.y, this.x, this.y),
+                        angleRest = newCalc.a%90;
+
+                      /*if(angleRest < 45) {
+                          this.radian += newCalc.r;
+                      } else {
+                          this.radian -= newCalc.r;
+                      }
+                      this.calculate();*/
+                      switch (newCalc.q){
+                          case 1:
+                              this.x_koef = this.x_koef*-1;
+                          break;
+                          case 2:
+                              this.x_koef = this.x_koef*-1;
+                          break;
+                          case 3:
+                              this.y_koef = this.y_koef*-1;
+                          break;
+                          case 4:
+                              this.y_koef = this.y_koef*-1;
+                          break;
+                      }
                       _circle.startMove(this.power*0.7,newCalc.r,newCalc.a,newCalc.q);
                   }
               }
@@ -86,7 +108,7 @@ function Player(x, y){
         }
     };
     this.checkClick = function(){
-        if(mouseDownListener(this.x, this.y, this.radius) && mouseDown){
+        if(mouseDownListener(this.x, this.y, this.radius) && mouseDown && !this.ball){
             this.click = true;
             hover = true;
             if(clicked_circle !== this) clicked_circle = this;
@@ -101,6 +123,10 @@ function Player(x, y){
         this.checkHover();
         if(this.hover || this.click){
             ctx.fillStyle = 'green';
+            ctx.fill();
+        }
+        if(this.ball){
+            ctx.fillStyle = '#686AEF';
             ctx.fill();
         }
         this.checkClick();
@@ -138,14 +164,30 @@ function cursorStyle(){
     }
 }
 
+function drawEverything(){
+    clearArea();
+    drawElements();
+    cursorStyle();
+}
+window.requestAnimFrame = (function(){
+    return  window.requestAnimationFrame       ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame    ||
+        function( callback ){
+            window.setTimeout(callback, 1000 / 60);
+        };
+})();
+
+function animate(){
+    requestID = requestAnimationFrame(animate);
+    drawEverything();
+}
 function initGame(){
-    circles.push(new Player);
-    circles.push(new Player(200, 400));
-    circles.push(new Player(400, 400));
-    var gave = setInterval(function(){
-        clearArea();
-        drawElements();
-        cursorStyle();
-    }, 40);
+    circles.push(new Circle(200, 400));
+    circles.push(new Circle(200, 200));
+    circles.push(new Circle(300, 300));
+    circles.push(new Circle(undefined,undefined,15,0.1, true));
+    animate();
+    console.log(requestID)
 }
 initGame();

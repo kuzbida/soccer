@@ -12,4 +12,4 @@ var canvas = document.getElementById("ctx"),
     hover = false,
     mouseDown = false,
     clicked_circle = false,
-    vector_length;
+    requestID = null;
