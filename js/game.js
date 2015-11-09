@@ -122,7 +122,7 @@ function Circle(x, y, radius, powerDecrease, ball){
         ctx.arc(this.x,this.y,this.radius,0,2*Math.PI);
         this.checkHover();
         if(this.hover || this.click){
-            ctx.fillStyle = 'green';
+            ctx.fillStyle = 'red';
             ctx.fill();
         }
         if(this.ball){
@@ -146,6 +146,9 @@ function Circle(x, y, radius, powerDecrease, ball){
     };
 }
 
+function drawBg(){
+    ctx.drawImage(img, 0, 0, width, height);
+}
 function drawElements(){
     for(var i = 0; i < circles.length; i++){
         circles[i].draw();
@@ -154,6 +157,7 @@ function drawElements(){
 
 function clearArea(){
     ctx.clearRect(0, 0, width, height);
+
 }
 
 function cursorStyle(){
@@ -166,6 +170,7 @@ function cursorStyle(){
 
 function drawEverything(){
     clearArea();
+    drawBg();
     drawElements();
     cursorStyle();
 }
@@ -183,6 +188,7 @@ function animate(){
     drawEverything();
 }
 function initGame(){
+    img.src = 'assets/img/soccer.jpg';
     circles.push(new Circle(200, 400));
     circles.push(new Circle(200, 200));
     circles.push(new Circle(300, 300));

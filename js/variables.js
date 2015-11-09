@@ -12,4 +12,5 @@ var canvas = document.getElementById("ctx"),
     hover = false,
     mouseDown = false,
     clicked_circle = false,
-    requestID = null;
+    requestID = null,
+    img = new Image;;
