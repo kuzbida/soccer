@@ -18,14 +18,12 @@ function Player(x, y){
     this.lineWidth = 2;
     this.hover = false;
     this.click = false;
-    this.power = null;
+    this.power = 0;
     this.angle = null;
     this.radian = null;
     this.quater = null;
     this.x_koef = null;
     this.y_koef = null;
-    this.line_x = null;
-    this.line_y = null;
     this.tan = function(){
       return Math.tan(this.radian);
     };
@@ -44,7 +42,7 @@ function Player(x, y){
         this.y_koef = y_koef;
     };
     this.move = function(){
-      if(this.power !== null && this.power > 0){
+      if(this.power > 0){
           if((this.x-this.radius) <= 0 || (this.x+this.radius) >= width )
               this.x_koef = this.x_koef*(-1);
           if((this.y-this.radius) <= 0 || (this.y+this.radius) >= height )
@@ -57,13 +55,18 @@ function Player(x, y){
                   var _circle = circles[k],
                       _r = _circle.radius;
 
-                  if(Math.abs(_circle.x - this.x) <= 2*_r + 2
-                      && Math.abs(_circle.y - this.y) <= 2*_r + 2){
-                      this.x_koef = this.x_koef*-1;
-                      this.y_koef = this.y_koef*-1;
+                  if(Math.abs(_circle.x - this.x) <= 2*_r
+                      && Math.abs(_circle.y - this.y) <= 2*_r
+                      && _circle.power === 0){
+                      var oldCalc = calcAngle(this.x, this.y,_circle.x, _circle.y);
+                      this.startMove(this.power*0.7,oldCalc.r,oldCalc.a,oldCalc.q);
+                      var newCalc = calcAngle(_circle.x, _circle.y, this.x, this.y);
+                      _circle.startMove(this.power*0.7,newCalc.r,newCalc.a,newCalc.q);
                   }
               }
           }
+      } else {
+          this.power = 0;
       }
     };
     this.startMove = function(power, radian, angle, quater){
@@ -110,12 +113,7 @@ function Player(x, y){
         if(this.click){
             ctx.beginPath();
             ctx.moveTo(this.x, this.y);
-            if(Math.sqrt(Math.pow((this.x - x_move), 2)
-                + Math.pow((this.y - y_move), 2)) < 120){
-                this.line_x = x_move;
-                this.line_y = y_move;
-            }
-            ctx.lineTo(this.line_x ,this.line_y);
+            ctx.lineTo(x_move ,y_move);
             ctx.stroke();
         }
         this.move();
