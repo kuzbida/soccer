@@ -60,15 +60,7 @@ function Circle(x, y, radius, powerDecrease, ball){
                   if(Math.abs(_circle.x - this.x) <= 2*_r
                       && Math.abs(_circle.y - this.y) <= 2*_r
                       && _circle.power === 0){
-                      var newCalc = calcAngle(_circle.x, _circle.y, this.x, this.y),
-                        angleRest = newCalc.a%90;
-
-                      /*if(angleRest < 45) {
-                          this.radian += newCalc.r;
-                      } else {
-                          this.radian -= newCalc.r;
-                      }
-                      this.calculate();*/
+                      var newCalc = calcAngle(_circle.x, _circle.y, this.x, this.y);
                       switch (newCalc.q){
                           case 1:
                               this.x_koef = this.x_koef*-1;
@@ -87,8 +79,9 @@ function Circle(x, y, radius, powerDecrease, ball){
                   }
               }
           }
-      } else {
+      } else if(this.power < 0.1 && this.power !== 0){
           this.power = 0;
+          clicked_circle = null;
       }
     };
     this.startMove = function(power, radian, angle, quater){
@@ -192,7 +185,7 @@ function initGame(){
     circles.push(new Circle(200, 400));
     circles.push(new Circle(200, 200));
     circles.push(new Circle(300, 300));
-    circles.push(new Circle(undefined,undefined,15,0.1, true));
+    circles.push(new Circle(undefined,undefined,15,0.05, true));
     animate();
     console.log(requestID)
 }

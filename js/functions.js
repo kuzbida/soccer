@@ -2,7 +2,7 @@ function calcAngle (x_start, y_start, x_end, y_end){
     var x_difference = x_start - x_end,
         y_difference = y_start - y_end,
         vector_length = Math.sqrt(Math.pow(x_difference, 2) + Math.pow(y_difference, 2)),
-        power = vector_length/10 > 12 ? 12 : vector_length/10,
+        power = vector_length/10 > 10 ? 10 : vector_length/10,
         opposite =  Math.sqrt(Math.pow(y_difference, 2)),
         radian = Math.asin(opposite / vector_length),
         angle = radian * 180/Math.PI,
